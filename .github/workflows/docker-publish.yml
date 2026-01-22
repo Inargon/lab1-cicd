@@ -4,12 +4,13 @@ on:
   push:
     branches: [ "main" ]
 
-# 关键设置：给予 GITHUB_TOKEN 写入 Packages 的权限
+# 权限配置：允许写入 GitHub Packages
 permissions:
   contents: read
   packages: write
 
 jobs:
+  # 第一步：测试任务
   test:
     runs-on: ubuntu-latest
     steps:
@@ -27,8 +28,9 @@ jobs:
       - name: Run tests
         run: npm test
 
+  # 第二步：构建并推送任务
   build-and-push:
-    needs: test
+    needs: test # 依赖测试任务，测试通过才执行
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -49,6 +51,9 @@ jobs:
         with:
           context: .
           push: true
-          # 注意：这里使用了 github.repository_owner 确保用户名小写
-          # 稍后我们在进阶部分会修改 tags 这一行
-          tags: ghcr.io/${{ github.repository_owner }}/ci-cd-practice:latest
+          # 🚨 关键修改点 🚨
+          # 1. 将 ${{ github.repository_owner }} 替换为小写的 "inargon"
+          # 2. 同时保留 latest 和 commit sha 两个标签（满足进阶作业满分要求）
+          tags: |
+            ghcr.io/inargon/ci-cd-practice:latest
+            ghcr.io/inargon/ci-cd-practice:${{ github.sha }}
