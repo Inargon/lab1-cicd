@@ -51,9 +51,9 @@ jobs:
         with:
           context: .
           push: true
-          # 🚨 关键修改点 🚨
-          # 1. 将 ${{ github.repository_owner }} 替换为小写的 "inargon"
-          # 2. 同时保留 latest 和 commit sha 两个标签（满足进阶作业满分要求）
+          # 🚨 关键修改点在这里 🚨
+          # 我把 ${{ github.repository_owner }} 替换成了手动写死的 "inargon" (全小写)
+          # 这样就符合 Docker 的命名规范了
           tags: |
-            ghcr.io/${{ github.repository_owner }}/ci-cd-practice:latest
-            ghcr.io/${{ github.repository_owner }}/ci-cd-practice:${{ github.sha }}
+            ghcr.io/inargon/ci-cd-practice:latest
+            ghcr.io/inargon/ci-cd-practice:${{ github.sha }}
